@@ -13,6 +13,7 @@ namespace Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * @author Daniel Leech <daniel@dantleech.com>
@@ -21,34 +22,25 @@ class RegistryPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('cmf_resource.registry.container')) {
+        if (!$container->hasDefinition('cmf_resource.registry')) {
             return;
         }
 
-        $repositoryRegistry = $container->getDefinition('cmf_resource.registry.container');
+        $repositoryRegistry = $container->getDefinition('cmf_resource.registry');
 
-        $ids = $container->findTaggedServiceIds('cmf_resource.repository');
+        $ids = $container->findTaggedServiceIds('cmf_resource.repository_factory');
         $map = array();
-        $types = array();
 
         foreach ($ids as $id => $attributes) {
-            foreach (array('alias', 'type') as $requiredKey) {
-                if (!isset($attributes[0][$requiredKey])) {
-                    throw new \InvalidArgumentException(sprintf(
-                        'No "%s" attribute specified for repository service definition tag: "%s"',
-                        $requiredKey,
-                        $id
-                    ));
-                }
+            if (!isset($attributes[0]['alias'])) {
+                throw new \InvalidArgumentException(sprintf(
+                    'No "alias" attribute specified for repository service definition tag: "%s"',
+                    $id
+                ));
             }
 
-            $map[$attributes[0]['alias']] = $id;
-            $types[$attributes[0]['type']] = $container->getParameterBag()->resolveValue(
-                $container->getDefinition($id)->getClass()
-            );
+            $map[$attributes[0]['alias']] = new Reference($id);
+            $repositoryRegistry->addMethodCall('addFactory', [ $attributes[0]['alias'], new Reference($id) ]);
         }
-
-        $repositoryRegistry->replaceArgument(1, $map);
-        $repositoryRegistry->replaceArgument(2, $types);
     }
 }

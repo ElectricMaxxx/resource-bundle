@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="cmf_resource.factory.filesystem" class="Symfony\Cmf\Bundle\ResourceBundle\Factory\FilesystemFactory">
+            <tag name="cmf_resource.repository_factory" alias="filesystem" />
+        </service>
+
+        <service id="cmf_resource.factory.doctrine_phpcr" class="Symfony\Cmf\Bundle\ResourceBundle\Factory\PhpcrFactory">
+            <argument type="service" id="service_container" />
+            <tag name="cmf_resource.repository_factory" alias="doctrine/phpcr" />
+        </service>
+
+        <service id="cmf_resource.factory.doctrine_phpcr_odm" class="Symfony\Cmf\Bundle\ResourceBundle\Factory\PhpcrOdmFactory">
+            <argument type="service" id="service_container" />
+            <tag name="cmf_resource.repository_factory" alias="doctrine/phpcr-odm" />
+        </service>
+
+        <service id="cmf_resource.factory.composite" class="Symfony\Cmf\Bundle\ResourceBundle\Factory\CompositeFactory">
+            <argument type="service" id="cmf_resource.registry" />
+            <tag name="cmf_resource.repository_factory" alias="composite" />
+        </service>
+
+    </services>
+</container>

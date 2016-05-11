@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Cmf\Bundle\ResourceBundle;
+namespace Symfony\Cmf\Bundle\ResourceBundle\Factory;
 
 use Symfony\Cmf\Component\Resource\RepositoryFactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Cmf\Component\Resource\Repository\PhpcrOdmRepository;
 
-class PhpcrOdmFactory extends RepositoryFactoryInterface
+class PhpcrOdmFactory implements RepositoryFactoryInterface
 {
     private $container;
 
@@ -26,13 +26,9 @@ class PhpcrOdmFactory extends RepositoryFactoryInterface
 
     public function create(array $options)
     {
-        if (!isset($options['basepath'])) {
-            $options['basepath'] = null;
-        }
-
         return new PhpcrOdmRepository(
             $this->container->get('doctrine_phpcr'),
-            $options['basedir']
+            $options['basepath']
         );
     }
 

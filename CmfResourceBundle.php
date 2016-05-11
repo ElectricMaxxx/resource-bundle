@@ -21,7 +21,6 @@ class CmfResourceBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container->addCompilerPass(new RegistryPass());
-        $container->addCompilerPass(new CompositeRepositoryPass());
         parent::build($container);
     }
 }

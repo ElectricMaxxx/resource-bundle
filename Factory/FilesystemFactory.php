@@ -9,19 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Cmf\Bundle\ResourceBundle;
+namespace Symfony\Cmf\Bundle\ResourceBundle\Factory;
 
 use Symfony\Cmf\Component\Resource\RepositoryFactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Cmf\Component\Resource\Repository\PhpcrOdmRepository;
+use Puli\Repository\FilesystemRepository;
 
-class FilesystemFactory extends RepositoryFactoryInterface
+class FilesystemFactory implements RepositoryFactoryInterface
 {
     public function create(array $options)
     {
         if (null === $options['base_dir']) {
             throw new \InvalidArgumentException(
-                'The filesystem repository type requires a "base_dir" option to be set.'
+                'The filesystem repository type requires the `base_dir` option to be set.'
             );
         }
 
@@ -35,7 +36,7 @@ class FilesystemFactory extends RepositoryFactoryInterface
     {
         return [
             'base_dir' => null,
-            'symlink' => null,
+            'symlink' => true,
         ];
     }
 }

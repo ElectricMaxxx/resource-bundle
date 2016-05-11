@@ -9,13 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Cmf\Bundle\ResourceBundle;
+namespace Symfony\Cmf\Bundle\ResourceBundle\Factory;
 
 use Symfony\Cmf\Component\Resource\RepositoryFactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Cmf\Component\Resource\Repository\PhpcrOdmRepository;
+use Symfony\Cmf\Component\Resource\Repository\PhpcrRepository;
 
-class PhpcrOdmFactory extends RepositoryFactoryInterface
+class PhpcrFactory implements RepositoryFactoryInterface
 {
     private $container;
 
@@ -26,7 +27,7 @@ class PhpcrOdmFactory extends RepositoryFactoryInterface
 
     public function create(array $options)
     {
-        return new PhpcrOdmRepository(
+        return new PhpcrRepository(
             $this->container->get('doctrine_phpcr.session'),
             $options['basedir']
         );

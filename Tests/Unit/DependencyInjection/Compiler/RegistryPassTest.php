@@ -15,42 +15,39 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\Compiler\RegistryPass;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
-class RegistryPassTest extends AbstractCompilerPassTestCase
+class RegistryPassTest extends \PHPUnit_Framework_TestCase
 {
-    protected function registerCompilerPass(ContainerBuilder $container)
+    protected function setUp()
     {
-        $container->addCompilerPass(new RegistryPass());
+        $this->container = new ContainerBuilder();
+        $this->container->addCompilerPass(new RegistryPass());
     }
 
     public function testCompilerPass()
     {
-        $registryDefinition = new Definition();
+        $registryDefinition = new Definition(\stdClass::class);
         $registryDefinition->setArguments(array(
             new Definition(),
             array(),
             array(),
         ));
-        $this->setDefinition('cmf_resource.registry.container', $registryDefinition);
+        $this->container->setDefinition('cmf_resource.registry', $registryDefinition);
 
         $repositoryDefinition = new Definition('ThisIsClass');
-        $repositoryDefinition->addTag('cmf_resource.repository', array(
-            'alias' => 'test_repository',
-            'type' => 'foobar',
+        $repositoryDefinition->addTag('cmf_resource.repository_factory', array(
+            'alias' => 'foobar',
         ));
-        $this->setDefinition('cmf_resource.repository.test', $repositoryDefinition);
+        $this->container->setDefinition('cmf_resource.repository_factory.test', $repositoryDefinition);
+        $this->container->compile();
 
-        $this->compile();
-
-        $this->assertContainerBuilderHasServiceDefinitionWithArgument(
-            'cmf_resource.registry.container',
-            1,
-            array(
-                'test_repository' => 'cmf_resource.repository.test',
-            ),
-            array(
-                'foobar' => 'ThisIsClass',
-            )
-        );
+        $methodCalls = $registryDefinition->getMethodCalls();
+        $this->assertCount(1, $methodCalls);
+        list($method, $args) = $methodCalls[0];
+        $this->assertEquals('addFactory', $method);
+        $this->assertCount(2, $args);
+        $this->assertEquals('foobar', $args[0]);
+        $this->assertEquals(new Reference('cmf_resource.repository_factory.test'), $args[1]);
     }
 }
