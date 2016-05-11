@@ -13,18 +13,23 @@ namespace Symfony\Cmf\Bundle\ResourceBundle\Factory;
 
 use Symfony\Cmf\Component\Resource\RepositoryFactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Cmf\Component\Resource\Repository\PhpcrOdmRepository;
 use Symfony\Cmf\Component\Resource\Repository\PhpcrRepository;
 
 class PhpcrFactory implements RepositoryFactoryInterface
 {
     private $container;
 
+    /**
+     * @param ContainerInterface $container
+     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function create(array $options)
     {
         return new PhpcrRepository(
@@ -33,6 +38,9 @@ class PhpcrFactory implements RepositoryFactoryInterface
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getDefaultConfig()
     {
         return [

@@ -12,7 +12,6 @@
 namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Unit\DependencyInjection;
 
 use Symfony\Cmf\Bundle\ResourceBundle\DependencyInjection\CmfResourceExtension;
-use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class CmfResourceExtensionTest extends \PHPUnit_Framework_TestCase
@@ -28,10 +27,10 @@ class CmfResourceExtensionTest extends \PHPUnit_Framework_TestCase
             [
                 'repositories' => [
                     'test' => [
-                        'type' => 'foobar'
-                    ]
-                ]
-            ]
+                        'type' => 'foobar',
+                    ],
+                ],
+            ],
         ], $container);
 
         $this->assertEquals([

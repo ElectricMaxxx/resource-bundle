@@ -12,9 +12,7 @@
 namespace Symfony\Cmf\Bundle\ResourceBundle\Registry;
 
 use Symfony\Cmf\Component\Resource\RepositoryFactoryInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Cmf\Component\Resource\RepositoryRegistryInterface;
-use Puli\Repository\Api\Resource\Resource;
 use Puli\Repository\Api\ResourceRepository;
 
 /**
@@ -27,14 +25,9 @@ class RepositoryRegistry implements RepositoryRegistryInterface
     private $instances = [];
     private $typeMap = [];
 
-    private $defaultInstanceName;
-
     public function __construct(
-        array $configurations,
-        $defaultInstanceName
-    )
-    {
-        $this->defaultInstanceName = $defaultInstanceName;
+        array $configurations
+    ) {
         $this->configurations = $configurations;
     }
 
@@ -55,7 +48,6 @@ class RepositoryRegistry implements RepositoryRegistryInterface
 
         $this->factories[$name] = $factory;
     }
-
 
     /**
      * {@inheritdoc}

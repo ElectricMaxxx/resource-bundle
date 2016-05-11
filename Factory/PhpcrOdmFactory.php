@@ -19,11 +19,17 @@ class PhpcrOdmFactory implements RepositoryFactoryInterface
 {
     private $container;
 
+    /**
+     * @param ContainerInterface $container
+     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function create(array $options)
     {
         return new PhpcrOdmRepository(
@@ -32,6 +38,9 @@ class PhpcrOdmFactory implements RepositoryFactoryInterface
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getDefaultConfig()
     {
         return [

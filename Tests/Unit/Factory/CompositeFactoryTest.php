@@ -33,11 +33,11 @@ class CompositeFactoryTest extends \PHPUnit_Framework_TestCase
 
         $composite = $this->factory->create([
             'mounts' => [
-                [ 
+                [
                     'repository' => 'repo1',
                     'mountpoint' => '/path',
-                ]
-            ]
+                ],
+            ],
         ]);
         $resource = $composite->get('/path/foo');
         $this->assertSame($this->resource->reveal(), $resource);
@@ -53,10 +53,10 @@ class CompositeFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->factory->create([
             'mounts' => [
-                [ 
+                [
                     'repository' => 'repo1',
-                ]
-            ]
+                ],
+            ],
         ]);
     }
 
@@ -70,9 +70,9 @@ class CompositeFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->factory->create([
             'mounts' => [
-                [ 
-                ]
-            ]
+                [
+                ],
+            ],
         ]);
     }
 }

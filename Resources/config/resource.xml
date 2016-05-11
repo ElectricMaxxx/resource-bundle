@@ -13,7 +13,6 @@
 
         <service id="cmf_resource.registry" class="Symfony\Cmf\Bundle\ResourceBundle\Registry\RepositoryRegistry">
             <argument>%cmf_resource.repository_configuration%</argument>
-            <argument>default</argument>
         </service>
 
     </services>

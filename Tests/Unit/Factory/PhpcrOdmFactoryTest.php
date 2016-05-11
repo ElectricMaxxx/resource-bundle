@@ -3,7 +3,6 @@
 namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Unit\Factory;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use PHPCR\SessionInterface;
 use Doctrine\Bundle\PHPCRBundle\ManagerRegistry;
 use Symfony\Cmf\Bundle\ResourceBundle\Factory\PhpcrOdmFactory;
 

@@ -21,7 +21,7 @@ class FilesystemFactoryTest extends \PHPUnit_Framework_TestCase
         $this->factory->create(
             array_merge(
                 $this->factory->getDefaultConfig(),
-                [ 'base_dir' => __DIR__ ]
+                ['base_dir' => __DIR__]
             )
         );
     }
@@ -37,7 +37,7 @@ class FilesystemFactoryTest extends \PHPUnit_Framework_TestCase
         $this->factory->create(
             array_merge(
                 $this->factory->getDefaultConfig(),
-                [ 'base_dir' => null ]
+                ['base_dir' => null]
             )
         );
     }

@@ -69,7 +69,7 @@ class Configuration implements ConfigurationInterface
                                             foreach ($item['collection'] as $mountId => $mount) {
                                                 $mountConfig = array();
                                                 foreach ($mount['option'] as $option) {
-                                                    $mountConfig[$option['name']] =  $option['value'];
+                                                    $mountConfig[$option['name']] = $option['value'];
                                                 }
 
                                                 $n[$id][$mountId] = $mountConfig;

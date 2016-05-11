@@ -12,12 +12,13 @@
 namespace Symfony\Cmf\Bundle\ResourceBundle\Factory;
 
 use Symfony\Cmf\Component\Resource\RepositoryFactoryInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Cmf\Component\Resource\Repository\PhpcrOdmRepository;
 use Puli\Repository\FilesystemRepository;
 
 class FilesystemFactory implements RepositoryFactoryInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function create(array $options)
     {
         if (null === $options['base_dir']) {
@@ -32,6 +33,9 @@ class FilesystemFactory implements RepositoryFactoryInterface
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getDefaultConfig()
     {
         return [
@@ -40,4 +44,3 @@ class FilesystemFactory implements RepositoryFactoryInterface
         ];
     }
 }
-

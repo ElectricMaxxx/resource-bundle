@@ -11,7 +11,6 @@
 
 namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Functional;
 
-use Doctrine\ODM\PHPCR\Document\Generic;
 use Symfony\Cmf\Component\Testing\Functional\BaseTestCase;
 
 class FilesystemRepositoryTest extends BaseTestCase
@@ -41,4 +40,3 @@ class FilesystemRepositoryTest extends BaseTestCase
         $this->assertEquals($expectedName, $res->getName());
     }
 }
-

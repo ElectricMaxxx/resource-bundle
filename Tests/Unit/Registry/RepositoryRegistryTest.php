@@ -30,7 +30,6 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
         return $registry;
     }
 
-
     /**
      * It should get a configured instance.
      */
@@ -44,7 +43,7 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
                 'instance1' => [
                     'type' => 'doctrine/orm',
                     'options' => [],
-                ]
+                ],
             ]
         );
 
@@ -69,8 +68,8 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
                     'type' => 'doctrine/orm',
                     'options' => [
                         'hello' => 'foobar',
-                    ]
-                ]
+                    ],
+                ],
             ]
         );
 
@@ -104,8 +103,8 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
                     'type' => 'doctrine/orm',
 'options' => [
                     'unknown_option' => null,
-                ]
-                ]
+                ],
+                ],
             ]
         );
 
@@ -119,7 +118,7 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
     /**
      * It should throw an exception if the repository instance does not exist.
      *
-     * @expectedException \InvalidArgumentException 
+     * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Repository instance "foobar" has not been registered
      */
     public function testInstanceNotExist()
@@ -142,7 +141,7 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
             ],
             [
                 'instance1' => [
-                ]
+                ],
             ]
         );
 
@@ -165,7 +164,7 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
                 'instance1' => [
                     'type' => 'not_exist',
 'options' => [],
-                ]
+                ],
             ]
         );
 
@@ -185,7 +184,7 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
                 'instance1' => [
                     'type' => 'doctrine/orm',
 'options' => [],
-                ]
+                ],
             ]
         );
 
@@ -210,7 +209,7 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
                 'instance1' => [
                     'type' => 'doctrine/orm',
 'options' => [],
-                ]
+                ],
             ]
         );
 
@@ -226,7 +225,7 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
      * It should throw an exception if the repository type cannot be resolved.
      *
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage No repository has been instantiated of class 
+     * @expectedExceptionMessage No repository has been instantiated of class
      */
     public function testGetTypeUnknownRepository()
     {
@@ -239,7 +238,7 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
      * It should throw an exception if the repository alias cannot be resolved.
      *
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Could not determine alias of repository of class 
+     * @expectedExceptionMessage Could not determine alias of repository of class
      */
     public function testGetAliasUnknownRepository()
     {

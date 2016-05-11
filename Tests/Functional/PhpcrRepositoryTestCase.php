@@ -25,7 +25,7 @@ class PhpcrRepositoryTestCase extends BaseTestCase
         $this->db('PHPCR')->purgeRepository(true);
         $this->db('PHPCR')->createTestNode();
 
-        $rootDocument =  $this->dm->find(null, '/test');
+        $rootDocument = $this->dm->find(null, '/test');
         $document = new Generic();
         $document->setNodeName('foo');
         $document->setParentDocument($rootDocument);
