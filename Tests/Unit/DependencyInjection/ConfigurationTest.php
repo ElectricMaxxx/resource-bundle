@@ -53,36 +53,36 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     {
         $processor = new Processor();
         $config = $processor->processConfiguration(new Configuration(), $source);
-        $this->assertEquals(array(
-                'repositories' => array(
-                    'content' => array(
+        $this->assertEquals([
+                'repositories' => [
+                    'content' => [
                         'type' => 'doctrine_phpcr_odm',
-                        'options' => array(
+                        'options' => [
                             'basepath' => '/cmf/content',
-                        ),
-                    ),
-                    'articles' => array(
+                        ],
+                    ],
+                    'articles' => [
                         'type' => 'doctrine_phpcr_odm',
-                        'options' => array(
+                        'options' => [
                             'basepath' => '/cmf/articles',
-                        ),
-                    ),
-                    'stuff' => array(
+                        ],
+                    ],
+                    'stuff' => [
                         'type' => 'composite',
-                        'options' => array(
-                            'mounts' => array(
-                                array(
+                        'options' => [
+                            'mounts' => [
+                                [
                                     'repository' => 'content',
                                     'mountpoint' => '/content',
-                                ),
-                                array(
+                                ],
+                                [
                                     'repository' => 'articles',
                                     'mountpoint' => '/articles',
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-        ), $config);
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+        ], $config);
     }
 }

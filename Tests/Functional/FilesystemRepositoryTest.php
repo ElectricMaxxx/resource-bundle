@@ -22,10 +22,10 @@ class FilesystemRepositoryTest extends BaseTestCase
 
     public function provideGet()
     {
-        return array(
-            array('/foo.txt', 'foo.txt'),
-            array('/assets/foo.css', 'foo.css'),
-        );
+        return [
+            ['/foo.txt', 'foo.txt'],
+            ['/assets/foo.css', 'foo.css'],
+        ];
     }
 
     /**

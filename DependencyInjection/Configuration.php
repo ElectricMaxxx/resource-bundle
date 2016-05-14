@@ -34,7 +34,7 @@ class Configuration implements ConfigurationInterface
                         ->beforeNormalization()
                             ->ifTrue(function ($n) { return is_array($n) && !isset($n['options']) && !isset($n['option']); })
                             ->then(function ($n) {
-                                $options = array();
+                                $options = [];
 
                                 foreach ($n as $name => $value) {
                                     if ('type' === $name) {
@@ -67,7 +67,7 @@ class Configuration implements ConfigurationInterface
                                             }
 
                                             foreach ($item['collection'] as $mountId => $mount) {
-                                                $mountConfig = array();
+                                                $mountConfig = [];
                                                 foreach ($mount['option'] as $option) {
                                                     $mountConfig[$option['name']] = $option['value'];
                                                 }
@@ -82,7 +82,7 @@ class Configuration implements ConfigurationInterface
                                     })
                                 ->end()
                                 ->useAttributeAsKey('name')
-                                ->defaultValue(array())
+                                ->defaultValue([])
                                 ->prototype('variable')->end()
                             ->end() // options
                         ->end()

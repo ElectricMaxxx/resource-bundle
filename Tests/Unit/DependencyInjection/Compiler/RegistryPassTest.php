@@ -27,17 +27,17 @@ class RegistryPassTest extends \PHPUnit_Framework_TestCase
     public function testCompilerPass()
     {
         $registryDefinition = new Definition(\stdClass::class);
-        $registryDefinition->setArguments(array(
+        $registryDefinition->setArguments([
             new Definition(),
-            array(),
-            array(),
-        ));
+            [],
+            [],
+        ]);
         $this->container->setDefinition('cmf_resource.registry', $registryDefinition);
 
         $repositoryDefinition = new Definition('ThisIsClass');
-        $repositoryDefinition->addTag('cmf_resource.repository_factory', array(
+        $repositoryDefinition->addTag('cmf_resource.repository_factory', [
             'alias' => 'foobar',
-        ));
+        ]);
         $this->container->setDefinition('cmf_resource.repository_factory.test', $repositoryDefinition);
         $this->container->compile();
 

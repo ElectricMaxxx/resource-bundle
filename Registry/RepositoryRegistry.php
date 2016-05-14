@@ -11,7 +11,6 @@
 
 namespace Symfony\Cmf\Bundle\ResourceBundle\Registry;
 
-use Symfony\Cmf\Component\Resource\RepositoryFactoryInterface;
 use Symfony\Cmf\Component\Resource\RepositoryRegistryInterface;
 use Puli\Repository\Api\ResourceRepository;
 
@@ -113,10 +112,9 @@ class RepositoryRegistry implements RepositoryRegistryInterface
         $defaultConfig = $factory->getDefaultConfig();
 
         $configDiff = array_diff(
-            array_keys($config), 
+            array_keys($config),
             array_keys($defaultConfig)
         );
-
 
         if ($configDiff) {
             throw new \InvalidArgumentException(sprintf(

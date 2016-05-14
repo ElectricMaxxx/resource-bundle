@@ -29,7 +29,7 @@ class RegistryPass implements CompilerPassInterface
         $repositoryRegistry = $container->getDefinition('cmf_resource.registry');
 
         $ids = $container->findTaggedServiceIds('cmf_resource.repository_factory');
-        $map = array();
+        $map = [];
 
         foreach ($ids as $id => $attributes) {
             if (!isset($attributes[0]['alias'])) {

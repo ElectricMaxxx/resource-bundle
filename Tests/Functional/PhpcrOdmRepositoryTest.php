@@ -39,11 +39,11 @@ class PhpcrOdmRepositoryTest extends PhpcrRepositoryTestCase
 
     public function provideGet()
     {
-        return array(
-            array('/foo', 'foo'),
-            array('/bar', 'bar'),
-            array('/', 'test'),
-        );
+        return [
+            ['/foo', 'foo'],
+            ['/bar', 'bar'],
+            ['/', 'test'],
+        ];
     }
 
     /**
@@ -61,10 +61,10 @@ class PhpcrOdmRepositoryTest extends PhpcrRepositoryTestCase
 
     public function provideFind()
     {
-        return array(
-            array('/*', 2),
-            array('/', 1),
-        );
+        return [
+            ['/*', 2],
+            ['/', 1],
+        ];
     }
 
     /**

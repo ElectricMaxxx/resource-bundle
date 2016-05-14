@@ -15,10 +15,10 @@ class CompositeRepositoryTest extends PhpcrRepositoryTestCase
 {
     public function provideGet()
     {
-        return array(
-            array('/content/foo', 'foo'),
-            array('/content/bar', 'bar'),
-        );
+        return [
+            ['/content/foo', 'foo'],
+            ['/content/bar', 'bar'],
+        ];
     }
 
     /**
@@ -36,9 +36,9 @@ class CompositeRepositoryTest extends PhpcrRepositoryTestCase
 
     public function provideFind()
     {
-        return array(
-            array('/content/*', 2),
-        );
+        return [
+            ['/content/*', 2],
+        ];
     }
 
     /**

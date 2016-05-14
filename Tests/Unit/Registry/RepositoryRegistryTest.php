@@ -230,7 +230,7 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
      * It should throw an exception if the repository type cannot be resolved.
      *
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage No repository has been registered of class 
+     * @expectedExceptionMessage No repository has been registered of class
      */
     public function testGetTypeUnknownRepository()
     {
@@ -243,7 +243,7 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
      * It should throw an exception if the repository alias cannot be resolved.
      *
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Unknown repository instance of type 
+     * @expectedExceptionMessage Unknown repository instance of type
      */
     public function testGetAliasUnknownRepository()
     {
