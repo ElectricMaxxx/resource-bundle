@@ -28,13 +28,9 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
     public function createRegistry(array $factories, array $configuration)
     {
         $registry = new RepositoryRegistry(
-            $configuration,
-            'default'
+            $factories,
+            $configuration
         );
-
-        foreach ($factories as $name => $factory) {
-            $registry->addFactory($name, $factory);
-        }
 
         return $registry;
     }
@@ -44,6 +40,9 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetInstanceName()
     {
+        $this->factory1->getDefaultConfig()->willReturn([]);
+        $this->factory1->create([])->willReturn($this->repository->reveal());
+
         $registry = $this->createRegistry(
             [
                 'doctrine/orm' => $this->factory1->reveal(),
@@ -56,9 +55,6 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        $this->factory1->getDefaultConfig()->willReturn([]);
-        $this->factory1->create([])->willReturn($this->repository->reveal());
-
         $repository = $registry->get('instance1');
         $this->assertSame($this->repository->reveal(), $repository);
     }
@@ -68,6 +64,15 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
      */
     public function testFactoryDefaultOptions()
     {
+        $this->factory1->getDefaultConfig()->willReturn([
+            'hello' => 'world',
+            'goodbye' => 'cruel world',
+        ]);
+        $this->factory1->create([
+            'hello' => 'foobar',
+            'goodbye' => 'cruel world',
+        ])->willReturn($this->repository->reveal());
+
         $registry = $this->createRegistry(
             [
                 'doctrine/orm' => $this->factory1->reveal(),
@@ -82,15 +87,6 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        $this->factory1->getDefaultConfig()->willReturn([
-            'hello' => 'world',
-            'goodbye' => 'cruel world',
-        ]);
-        $this->factory1->create([
-            'hello' => 'foobar',
-            'goodbye' => 'cruel world',
-        ])->willReturn($this->repository->reveal());
-
         $repository = $registry->get('instance1');
         $this->assertSame($this->repository->reveal(), $repository);
     }
@@ -103,6 +99,10 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidKey()
     {
+        $this->factory1->getDefaultConfig()->willReturn([
+            'goodbye' => 'cruel world',
+        ]);
+
         $registry = $this->createRegistry(
             [
                 'doctrine/orm' => $this->factory1->reveal(),
@@ -110,16 +110,12 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
             [
                 'instance1' => [
                     'type' => 'doctrine/orm',
-'options' => [
-                    'unknown_option' => null,
-                ],
+                    'options' => [
+                        'unknown_option' => null,
+                    ],
                 ],
             ]
         );
-
-        $this->factory1->getDefaultConfig()->willReturn([
-            'goodbye' => 'cruel world',
-        ]);
 
         $registry->get('instance1');
     }
@@ -185,6 +181,9 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetRepositoryAlias()
     {
+        $this->factory1->getDefaultConfig()->willReturn([]);
+        $this->factory1->create([])->willReturn($this->repository->reveal());
+
         $registry = $this->createRegistry(
             [
                 'doctrine/orm' => $this->factory1->reveal(),
@@ -196,9 +195,6 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
                 ],
             ]
         );
-
-        $this->factory1->getDefaultConfig()->willReturn([]);
-        $this->factory1->create([])->willReturn($this->repository->reveal());
 
         $repository = $registry->get('instance1');
         $alias = $registry->getRepositoryAlias($repository);
@@ -210,6 +206,9 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetRepositoryType()
     {
+        $this->factory1->getDefaultConfig()->willReturn([]);
+        $this->factory1->create([])->willReturn($this->repository->reveal());
+
         $registry = $this->createRegistry(
             [
                 'doctrine/orm' => $this->factory1->reveal(),
@@ -222,9 +221,6 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        $this->factory1->getDefaultConfig()->willReturn([]);
-        $this->factory1->create([])->willReturn($this->repository->reveal());
-
         $repository = $registry->get('instance1');
         $alias = $registry->getRepositoryType($repository);
         $this->assertEquals('doctrine/orm', $alias);
@@ -234,7 +230,7 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
      * It should throw an exception if the repository type cannot be resolved.
      *
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage No repository has been instantiated of class
+     * @expectedExceptionMessage No repository has been registered of class 
      */
     public function testGetTypeUnknownRepository()
     {
@@ -247,7 +243,7 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
      * It should throw an exception if the repository alias cannot be resolved.
      *
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Could not determine alias of repository of class
+     * @expectedExceptionMessage Unknown repository instance of type 
      */
     public function testGetAliasUnknownRepository()
     {

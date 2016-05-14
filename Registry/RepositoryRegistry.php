@@ -16,37 +16,28 @@ use Symfony\Cmf\Component\Resource\RepositoryRegistryInterface;
 use Puli\Repository\Api\ResourceRepository;
 
 /**
+ * Repository registry which uses pre-registered factories to create
+ * the repository instances according to the configuration.
+ *
  * @author Daniel Leech <daniel@dantleech.com>
  */
 class RepositoryRegistry implements RepositoryRegistryInterface
 {
     private $factories = [];
-    private $configurations = [];
     private $instances = [];
     private $typeMap = [];
 
-    public function __construct(
-        array $configurations
-    ) {
-        $this->configurations = $configurations;
-    }
-
     /**
-     * Add a repository factory.
-     *
-     * @param string $name
-     * @param RepositoryFactoryInterface
+     * @param array $factories
+     * @param array $configurations
      */
-    public function addFactory($name, RepositoryFactoryInterface $factory)
+    public function __construct(array $factories, array $configurations)
     {
-        if (isset($this->factories[$name])) {
-            throw new \RuntimeException(sprintf(
-                'A factory named "%s" has already been registered',
-                $name
-            ));
-        }
+        $this->factories = $factories;
 
-        $this->factories[$name] = $factory;
+        foreach ($configurations as $repositoryName => $config) {
+            $this->createRepositoryInstance($repositoryName, $config);
+        }
     }
 
     /**
@@ -55,7 +46,11 @@ class RepositoryRegistry implements RepositoryRegistryInterface
     public function get($instanceName)
     {
         if (!isset($this->instances[$instanceName])) {
-            $this->instances[$instanceName] = $this->createRepositoryInstance($instanceName);
+            throw new \InvalidArgumentException(sprintf(
+                'Repository instance "%s" has not been registered, available repository instances: "%s"',
+                $instanceName,
+                implode('", "', array_keys($this->instances))
+            ));
         }
 
         return $this->instances[$instanceName];
@@ -73,7 +68,7 @@ class RepositoryRegistry implements RepositoryRegistryInterface
         }
 
         throw new \InvalidArgumentException(sprintf(
-            'Could not determine alias of repository of class "%s", it was not created by this registry.',
+            'Unknown repository instance of type "%s", cannot determine the alias.',
             get_class($repository)
         ));
     }
@@ -86,7 +81,7 @@ class RepositoryRegistry implements RepositoryRegistryInterface
         $repositoryClass = get_class($repository);
         if (!isset($this->typeMap[$repositoryClass])) {
             throw new \InvalidArgumentException(sprintf(
-                'No repository has been instantiated of class "%s", cannot determine the type, known types: "%s".',
+                'No repository has been registered of class "%s", cannot determine the type, known types: "%s".',
                 $repositoryClass,
                 implode('", "', $this->typeMap)
             ));
@@ -95,18 +90,8 @@ class RepositoryRegistry implements RepositoryRegistryInterface
         return $this->typeMap[$repositoryClass];
     }
 
-    private function createRepositoryInstance($instanceName)
+    private function createRepositoryInstance($instanceName, array $config)
     {
-        if (!isset($this->configurations[$instanceName])) {
-            throw new \InvalidArgumentException(sprintf(
-                'Repository instance "%s" has not been registered, available repository instances: "%s"',
-                $instanceName,
-                implode('", "', array_keys($this->configurations))
-            ));
-        }
-
-        $config = $this->configurations[$instanceName];
-
         if (!isset($config['type'])) {
             throw new \InvalidArgumentException(sprintf(
                 'Each instance configuration must have a "type" key (for configuration "%s")',
@@ -126,7 +111,12 @@ class RepositoryRegistry implements RepositoryRegistryInterface
 
         $factory = $this->factories[$type];
         $defaultConfig = $factory->getDefaultConfig();
-        $configDiff = array_diff(array_keys($config), array_keys($defaultConfig));
+
+        $configDiff = array_diff(
+            array_keys($config), 
+            array_keys($defaultConfig)
+        );
+
 
         if ($configDiff) {
             throw new \InvalidArgumentException(sprintf(
@@ -142,6 +132,6 @@ class RepositoryRegistry implements RepositoryRegistryInterface
         $repository = $factory->create($config);
         $this->typeMap[get_class($repository)] = $type;
 
-        return $repository;
+        $this->instances[$instanceName] = $repository;
     }
 }
