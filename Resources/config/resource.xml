@@ -12,6 +12,7 @@
         <service id="cmf_resource.finder.selector.parser" class="Symfony\Cmf\Component\Resource\Finder\SelectorParser" />
 
         <service id="cmf_resource.registry" class="Symfony\Cmf\Bundle\ResourceBundle\Registry\RepositoryRegistry">
+            <argument /> <!-- Factories service IDs -->
             <argument>%cmf_resource.repository_configuration%</argument>
         </service>
 

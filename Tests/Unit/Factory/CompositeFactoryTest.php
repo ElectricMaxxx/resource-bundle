@@ -24,9 +24,8 @@ class CompositeFactoryTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->registry = $this->prophesize(RepositoryRegistryInterface::class);
-        $this->factory = new CompositeFactory(
-            $this->registry->reveal()
-        );
+        $this->factory = new CompositeFactory();
+        $this->factory->setRepositoryRegistry($this->registry->reveal());
         $this->repository = $this->prophesize(ResourceRepository::class);
         $this->resource = $this->prophesize(Resource::class);
     }

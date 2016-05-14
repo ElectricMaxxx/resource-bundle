@@ -41,12 +41,10 @@ class RegistryPassTest extends \PHPUnit_Framework_TestCase
         $this->container->setDefinition('cmf_resource.repository_factory.test', $repositoryDefinition);
         $this->container->compile();
 
-        $methodCalls = $registryDefinition->getMethodCalls();
-        $this->assertCount(1, $methodCalls);
-        list($method, $args) = $methodCalls[0];
-        $this->assertEquals('addFactory', $method);
-        $this->assertCount(2, $args);
-        $this->assertEquals('foobar', $args[0]);
-        $this->assertEquals(new Reference('cmf_resource.repository_factory.test'), $args[1]);
+        $args = $registryDefinition->getArguments();
+        $this->assertCount(1, $args[0]);
+        $this->assertEquals([
+            'foobar' => new Reference('cmf_resource.repository_factory.test'),
+        ], $args[0]);
     }
 }

@@ -20,7 +20,6 @@
         </service>
 
         <service id="cmf_resource.factory.composite" class="Symfony\Cmf\Bundle\ResourceBundle\Factory\CompositeFactory">
-            <argument type="service" id="cmf_resource.registry" />
             <tag name="cmf_resource.repository_factory" alias="composite" />
         </service>
 

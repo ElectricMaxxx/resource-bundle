@@ -14,6 +14,8 @@ namespace Symfony\Cmf\Bundle\ResourceBundle\Tests\Unit\Registry;
 use Symfony\Cmf\Component\Resource\RepositoryFactoryInterface;
 use Puli\Repository\Api\ResourceRepository;
 use Symfony\Cmf\Bundle\ResourceBundle\Registry\RepositoryRegistry;
+use Symfony\Cmf\Bundle\ResourceBundle\Factory\CompositeFactory;
+use Prophecy\Argument;
 
 class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
 {
@@ -250,5 +252,30 @@ class RepositoryRegistryTest extends \PHPUnit_Framework_TestCase
         $repository = $this->prophesize(ResourceRepository::class);
         $registry = $this->createRegistry([], []);
         $registry->getRepositoryAlias($repository->reveal());
+    }
+
+    /**
+     * It should set the registry on the CompositeFactory.
+     */
+    public function testSetSelfOnCompositeFactory()
+    {
+        $composite = $this->prophesize(CompositeFactory::class);
+        $composite->getDefaultConfig()->willReturn([]);
+        $composite->setRepositoryRegistry(Argument::type(RepositoryRegistry::class))->shouldBeCalled();
+        $composite->create([])->willReturn($this->repository->reveal());
+
+        $registry = $this->createRegistry(
+            [
+                'composite' => $composite->reveal(),
+            ],
+            [
+                'foo' => [
+                    'type' => 'composite',
+                    'options' => [],
+                ],
+            ]
+        );
+
+        $registry->get('foo');
     }
 }

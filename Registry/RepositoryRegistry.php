@@ -13,6 +13,7 @@ namespace Symfony\Cmf\Bundle\ResourceBundle\Registry;
 
 use Symfony\Cmf\Component\Resource\RepositoryRegistryInterface;
 use Puli\Repository\Api\ResourceRepository;
+use Symfony\Cmf\Bundle\ResourceBundle\Factory\CompositeFactory;
 
 /**
  * Repository registry which uses pre-registered factories to create
@@ -127,7 +128,12 @@ class RepositoryRegistry implements RepositoryRegistryInterface
 
         $config = array_merge($defaultConfig, $config);
 
+        if ($factory instanceof CompositeFactory) {
+            $factory->setRepositoryRegistry($this);
+        }
+
         $repository = $factory->create($config);
+
         $this->typeMap[get_class($repository)] = $type;
 
         $this->instances[$instanceName] = $repository;

@@ -22,7 +22,7 @@ class CompositeFactory implements RepositoryFactoryInterface
     /**
      * @param RepositoryRegistryInterface $registry
      */
-    public function __construct(RepositoryRegistryInterface $registry)
+    public function setRepositoryRegistry(RepositoryRegistryInterface $registry)
     {
         $this->registry = $registry;
     }
@@ -33,6 +33,13 @@ class CompositeFactory implements RepositoryFactoryInterface
     public function create(array $options)
     {
         $compositeRepoistory = new CompositeRepository();
+
+        if (null === $this->registry) {
+            throw new \RuntimeException(
+                'The repository registry instance has not been set on the CompositeFactory.'
+            );
+        }
+
         foreach ($options['mounts'] as $mount) {
             if (!isset($mount['mountpoint'])) {
                 throw new \InvalidArgumentException(sprintf(

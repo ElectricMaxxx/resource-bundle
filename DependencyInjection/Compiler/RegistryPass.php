@@ -40,7 +40,8 @@ class RegistryPass implements CompilerPassInterface
             }
 
             $map[$attributes[0]['alias']] = new Reference($id);
-            $repositoryRegistry->addMethodCall('addFactory', [$attributes[0]['alias'], new Reference($id)]);
         }
+
+        $repositoryRegistry->replaceArgument(0, $map);
     }
 }
